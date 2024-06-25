@@ -148,14 +148,19 @@ app.get("/",function(req,res){
 
 
 app.get("/chat",ensureAuthenticated, function(req,res){
-    console.log(user);
+  
     res.render("chat");
 });
 
 
-app.get("/profile",ensureAuthenticated, function(req,res){
-    console.log(user);
+app.get("/profile", function(req,res){
+  
     res.render("profile");
+});
+
+app.get("/user/editprofile", function(req,res){
+  
+  res.render("editProfile");
 });
 
 app.get("/login",function(req,res){
