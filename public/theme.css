@@ -39,6 +39,17 @@
             transition: transform 0.3s ease;
             border-radius: 5px;
         }
+
+        .icons{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .icons div{
+            width: 150px;
+            padding: 10px;
+            border: 1px solid grey;
+        }
         .icons img:hover {
             transform: scale(1.1);
         }
