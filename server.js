@@ -14,6 +14,7 @@ import session from 'express-session';
 import {ObjectId} from 'mongodb';
 import LocalStrategy from 'passport-local';
 import FacebookStrategy from 'passport-facebook';
+import GoogleStrategy from 'passport-google-oauth2';
 
 
 const app= express();
@@ -63,7 +64,8 @@ app.use(passport.authenticate('session'));
   return cb(null,{
 
     id:user.id,
-    username:user.displayName
+    username:user.username, 
+    name: user.name
   });
 
 	});
@@ -102,7 +104,16 @@ console.log(profile);
 
 );
 
-
+passport.use(new GoogleStrategy({
+    clientID:  process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: "/oauth2/redirect/google",
+    passReqToCallback   : true
+  },
+  function(request, accessToken, refreshToken, profile, done) {
+    console.log(profile);
+  }
+));
 
 
 function ensureAuthenticated(req, res, next) {
@@ -120,11 +131,21 @@ app.get('/oauth2/redirect/facebook',
 passport.authenticate('facebook', {failureRedirect:'/', failureMessage:true}),
 
 function(req,res){
- 
-    res.redirect('/home');
+ console.log(req.session.message);
+ console.log("should redirect");
+    res.redirect('/profile');
     
 });
 
+app.get("/login/google", passport.authenticate('google',{ scope: 'profile'}));
+
+app.get( '/oauth2/redirect/google',
+    passport.authenticate( 'google', {
+        successRedirect: '/profile',
+        failureRedirect: '/login'
+}));
+	
+	
 app.post('/logout', function(req,res){
 
     req.logOut(
@@ -143,7 +164,9 @@ app.post('/logout', function(req,res){
 
 app.get("/",function(req,res){
 
+
     res.render("index");
+    console.log(req.session.message);
 });
 
 
@@ -182,4 +205,4 @@ app.post("login/username", function(){
 
 app.listen(3000, ()=>{
     console.log("Running on port 3000");
-    });
+        });
