@@ -72,6 +72,11 @@ app.use(passport.authenticate('session'));
   
   });
 
+let connection= new database();
+let mongoClient= connection.createClient();
+
+
+  if(mongoClient){
   
   passport.deserializeUser(function(user, cb) {
 
@@ -200,7 +205,13 @@ app.post("login/username", function(){
 
 });
 
+}
 
+else{
+
+
+
+}
 
 
 app.listen(3000, ()=>{

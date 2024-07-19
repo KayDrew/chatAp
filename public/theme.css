@@ -54,7 +54,7 @@
         .icons img:hover {
             transform: scale(1.1);
         }
-        input[type="email"], input[type="password"], button {
+        input, button {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
