@@ -15,6 +15,7 @@ import {ObjectId} from 'mongodb';
 import LocalStrategy from 'passport-local';
 import FacebookStrategy from 'passport-facebook';
 import GoogleStrategy from 'passport-google-oauth2';
+import routes from './routes.js';
 
 
 const app= express();
@@ -72,6 +73,7 @@ app.use(passport.authenticate('session'));
   
   });
 
+let route= new routes();
 let connection= new database();
 let mongoClient= connection.createClient();
 
@@ -204,6 +206,8 @@ app.get("/signup",function(req,res){
 app.post("login/username", function(){
 
 });
+
+app.post("/signup/auth", route.signup);
 
 }
 

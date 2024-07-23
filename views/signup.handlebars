@@ -10,13 +10,13 @@
         </div>
        
             <h3 style="color: aliceblue;font-weight:lighter">Or</h3>
-        <form action="#">
+        <form action="/signup/auth" method="post">
      
-              <input type="text" placeholder= "First Name" required/> 
-              <input type="text" placeholder= "Last Name" required/>  
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
-            <input type="password" placeholder="Confirm Password" required>
+              <input type="text" placeholder= "First Name" required  name="name"/> 
+              <input type="text" placeholder= "Surname" required name="surname" />  
+            <input type="email" placeholder="Email" required name="email">
+            <input type="password" placeholder="Password" required name="password">
+            <input type="password" placeholder="Confirm Password" required name="confirmPassword">
             <button type="submit" style="margin-bottom: 30px;">Signup</button>
         </form>
        
