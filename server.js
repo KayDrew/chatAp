@@ -1,4 +1,3 @@
-
 import createErrors from 'http-errors';
 import express from 'express';
 import { config } from 'dotenv';
@@ -9,20 +8,17 @@ import logger from 'morgan';
 import { engine } from 'express-handlebars';
 import passport from 'passport';
 import database from './database.js';
-//import routes from './index.js';
 import session from 'express-session';
 import {ObjectId} from 'mongodb';
 import LocalStrategy from 'passport-local';
 import FacebookStrategy from 'passport-facebook';
 import GoogleStrategy from 'passport-google-oauth2';
 import routes from './routes.js';
+import bcrypt  from 'bcryptjs';
 
 
 const app= express();
 
-
-const data= database();
-//const route= routes();
 app.locals.pluralize;
 
 // view engine setup
@@ -72,13 +68,6 @@ app.use(passport.authenticate('session'));
 	});
   
   });
-
-let route= new routes();
-let connection= new database();
-let mongoClient= connection.createClient();
-
-
-  if(mongoClient){
   
   passport.deserializeUser(function(user, cb) {
 
@@ -88,8 +77,16 @@ let mongoClient= connection.createClient();
   });
 
 
+let route= new routes();
+const data= database();
+let mongoClient= data.createClient();
 
-passport.use( new FacebookStrategy({
+
+  if(mongoClient){
+  
+  data.createDB();
+
+    passport.use( new FacebookStrategy({
 
     clientID: process.env.FACEBOOK_APP_ID,
     clientSecret: process.env.FACEBOOK_APP_SECRET,
@@ -198,10 +195,7 @@ app.get("/login",function(req,res){
     res.render("login");
 });
 
-app.get("/signup",function(req,res){
-
-    res.render("signup");
-});
+app.get("/signup",route.signupPage);
 
 app.post("login/username", function(){
 
