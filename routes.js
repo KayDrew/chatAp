@@ -4,9 +4,11 @@ import database from './database.js';
 const salt=10;
 config();
 
-const data= new database();
+const data= database();
 
 export default function routes(){
+	
+	 data.createDB();
 
 let email;
 let password;
@@ -14,11 +16,12 @@ let name;
 let surname;
 let confirmPassword;
 let error="";
+let loginError;
 const passRegex= /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const regex = /^([a-zA-Z]{3,})$/;
 
 
-function signup(req,res){
+async function signup(req,res){
 		
 email= req.body.email;
 name= req.body.name;
@@ -34,8 +37,11 @@ email= email.trim();
 password= password.trim();
 confirmPassword= confirmPassword.trim();
 
+let userExists=await data.getEmail(email);
+
+console.log(typeof(userExists+userExists));
 //check if user exists
-if(data.getEmail(email)){
+if(userExists){
 
 error="User already exists. Please, login";
 res.redirect("/signup");
@@ -76,10 +82,12 @@ if(passRegex.test(password) && passRegex.test(confirmPassword)){
    
 if(password===confirmPassword){
 	
-password =hashPassword(password);
+hashPassword();
 
+ //data.createDB();
 //create a new record for user
-data.createUser(name,surname,email,password);
+//console.log(hashPassword(password));
+
 
 error="";
 res.redirect("/");
@@ -123,8 +131,8 @@ res.redirect("/signup");
 
 }
 
-function signupPage(req, res){
-
+async function signupPage(req, res){
+//await data.deleteAll();
 res.render("signup", {
 error
 });
@@ -133,13 +141,15 @@ error
 
 
 
-function  hashPassword(password){
+function  hashPassword(){
 	
 	bcrypt.hash(password, salt).then(function (hash){
-    password= hash;
+    
+   data.createUser(name,surname,email,hash);
+    console.log(hash);
  
 });
-
+return password;
 
 }
 
@@ -176,7 +186,7 @@ res.res.redirect("/");
 //if they don't  match
 else{
 
-error="Incorrect email or password";
+loginError="Incorrect email or password";
 res.redirect("/login");
 }
 
@@ -186,7 +196,7 @@ res.redirect("/login");
 
 //user email could not be found
 else{
-error="User does not exist. You must create an account to proceed. ";
+loginError="User does not exist. You must create an account to proceed. ";
 res.redirect("/login");
 
 }

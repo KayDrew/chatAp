@@ -76,25 +76,64 @@ mongoClient.close();
 
 
 
-async function createUser(){
 
+async function getEmail(email) {
+	
+	try{
+	 mongoClient=await createClient()
+	
+    const result = await collection.findOne({email:email});
+
+    if (result) {
+      await console.log(result);
+        
+        return result.email;
+    } else {
+        console.log(`No listings found`);
+        return null;            
+    }
+    
+    mongoClient.close();
+   } 
+   
+   catch(err){
+console.log(err);
+mongoClient.close();
 
 }
 
+}
 
-async function getEmail(email){
+async function deleteAll(){
 
 try{
-mongoClient= await createClient();	
-let result= await collection.findOne(email);
-var email= result.email;
-console.log(result);
+mongoClient= await createClient();
+await collection. deleteMany({});
+console.log("deleted");
 
-return email;
+}catch(err){
+console.log(err);
+
+}finally {
+
+mongoClient.close();
 }
 
-finally{
-	mongoClient.close();
+}
+
+async function deleteUser(email){
+
+try{
+mongoClient= await createClient();
+
+await collection.deleteOne({email:email});
+console.log("deleted user");
+
+}catch(err){	
+console.log(err);
+
+}finally{
+mongoClient.close();
 }
 
 }
@@ -130,7 +169,9 @@ createClient,
 createDB ,
 getEmail,
 getPassword ,
-
+createUser,
+deleteAll,
+deleteUser,
 }
     
 }

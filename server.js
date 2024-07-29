@@ -77,15 +77,13 @@ app.use(passport.authenticate('session'));
   });
 
 
-let route= new routes();
+let route=  routes();
 const data= database();
 let mongoClient= data.createClient();
 
 
   if(mongoClient){
-  
-  data.createDB();
-
+ 
     passport.use( new FacebookStrategy({
 
     clientID: process.env.FACEBOOK_APP_ID,
