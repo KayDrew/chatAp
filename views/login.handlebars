@@ -9,14 +9,15 @@
             <a href="/login/google"><img src="/google.png" alt="Gmail"> Google</a></div>
         </div>
             <h3 style="color: aliceblue;font-weight:lighter">Or</h3>
-                        <h3>{{{loginError}}}</h3>
-        <form action="/confirmLogin" method="post">
-            <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
+                  <h3>{{{loginError}}}</h3>
+        <form action="/login/auth" method="post">
+            <input type="email" placeholder="Email" required name="loginEmail">
+            <input type="password" placeholder="Password" required name="loginPassword">
             <button type="submit" style="margin-bottom: 30px;">Login</button>
         </form>
         <a href="/resetPassword" style="color: blue;">Forgot password? Reset password</a>  <br><br>
         <a href="/signup" >Don't have an account? Create account</a>
     </div>
+         
 </body>
 </html>

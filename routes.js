@@ -15,8 +15,8 @@ let password;
 let name;
 let surname;
 let confirmPassword;
-let error="";
-let loginError;
+let error="no error";
+let loginError="No error";
 const passRegex= /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const regex = /^([a-zA-Z]{3,})$/;
 
@@ -159,8 +159,8 @@ return password;
 async function confirmLogin(req,res){
 	
 //get user input 	
-let loginEmail= req.body.email;
-let loginPassword= req.body.password;
+let loginEmail= req.body.loginEmail;
+let loginPassword= req.body.loginPassword;
 let dbEmail;
 let dbPassword;
 
@@ -172,10 +172,11 @@ if(dbEmail){
 
 //find the corresponding password in database 
 dbPassword= await data.getPassword(dbEmail);
-
+console.log(dbPassword);
 //compare user password  to database  password 
 bcrypt.compare(dbPassword,loginPassword).then(function(result){
 
+console.log(result);
 //if they match 	
 if(result){	
 
@@ -201,12 +202,14 @@ res.redirect("/login");
 
 }
 
+console.log(loginError);
 }
 
 
 function login(req,res){
-
-res.render("login",{error});
+res.render("login", {
+loginError 
+});
 
 }
 

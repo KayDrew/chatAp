@@ -89,7 +89,7 @@ async function getEmail(email) {
         
         return result.email;
     } else {
-        console.log(`No listings found`);
+        console.log(`User does not exist `);
         return null;            
     }
     
@@ -140,26 +140,31 @@ mongoClient.close();
 
 async function getPassword(email){
 
-var email= await getEmail(email);
-let password;
 
-if(email){
+try{
+	 mongoClient=await createClient()
+	
+    const result = await collection.findOne({email:email});
 
-try
-{
-let result= db.collection.findOne(email);
-password= result.password;
-console.log(password);
-
-return password;
-
-} finally{
-
+    if (result) {
+      await console.log(result);
+        
+        return result.password;
+    } else {
+        console.log(`Password  not found`);
+        return null;            
+    }
+    
+    mongoClient.close();
+   } 
+   
+   catch(err){
+console.log(err);
 mongoClient.close();
 
 }
 
-}
+
 
 }
 

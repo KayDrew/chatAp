@@ -172,10 +172,7 @@ app.get("/",function(req,res){
 });
 
 
-app.get("/chat",ensureAuthenticated, function(req,res){
-  
-    res.render("chat");
-});
+app.get("/chat",route.signup);
 
 
 app.get("/profile", function(req,res){
@@ -183,15 +180,9 @@ app.get("/profile", function(req,res){
     res.render("profile");
 });
 
-app.get("/user/editprofile", function(req,res){
-  
-  res.render("editProfile");
-});
+app.get("/user/editprofile",route.signup);
 
-app.get("/login",function(req,res){
-
-    res.render("login");
-});
+app.get("/login",route.login);
 
 app.get("/signup",route.signupPage);
 
@@ -201,7 +192,11 @@ app.post("login/username", function(){
 
 app.post("/signup/auth", route.signup);
 
+app.post("/login/auth", route.confirmLogin);
+
+
 }
+
 
 else{
 
