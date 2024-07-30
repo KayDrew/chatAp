@@ -39,7 +39,6 @@ confirmPassword= confirmPassword.trim();
 
 let userExists=await data.getEmail(email);
 
-console.log(typeof(userExists+userExists));
 //check if user exists
 if(userExists){
 
@@ -74,20 +73,15 @@ for(let i=1;i<surname.length;++i){
 
 //assign standardised name and surname
 name= a+b;
-//console.log(name);
 surname= c+d;
-//console.log(surname);
+
 
 if(passRegex.test(password) && passRegex.test(confirmPassword)){
    
 if(password===confirmPassword){
-	
+
+//store user in database with hashed password 	
 hashPassword();
-
- //data.createDB();
-//create a new record for user
-//console.log(hashPassword(password));
-
 
 error="";
 res.redirect("/");
@@ -132,7 +126,7 @@ res.redirect("/signup");
 }
 
 async function signupPage(req, res){
-//await data.deleteAll();
+
 res.render("signup", {
 error
 });
@@ -144,16 +138,12 @@ error
 function  hashPassword(){
 	
 	bcrypt.hash(password, salt).then(function (hash){
-    
    data.createUser(name,surname,email,hash);
-    console.log(hash);
  
 });
 return password;
 
 }
-
-
 
 
 async function confirmLogin(req,res){
@@ -172,15 +162,14 @@ if(dbEmail){
 
 //find the corresponding password in database 
 dbPassword= await data.getPassword(dbEmail);
-console.log(dbPassword);
-//compare user password  to database  password 
-bcrypt.compare(dbPassword,loginPassword).then(function(result){
 
-console.log(result);
+//compare user password  to database  password 
+bcrypt.compare(loginPassword,dbPassword).then(function(result){
+
 //if they match 	
 if(result){	
 
-res.res.redirect("/");
+res.redirect("/");
 
 }
 
@@ -202,7 +191,6 @@ res.redirect("/login");
 
 }
 
-console.log(loginError);
 }
 
 

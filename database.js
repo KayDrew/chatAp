@@ -33,11 +33,9 @@ try{
 	
 mongoClient= await createClient();
 let db= mongoClient.db("chat-app");
-//console.log("created database");
 collection = db.collection("chat-users");
-//console.log("created collection");
 sessionCollection= db.collection("sessions");
-//console.log("created session collection");
+
 
 }catch(err){
 	
@@ -84,12 +82,10 @@ async function getEmail(email) {
 	
     const result = await collection.findOne({email:email});
 
-    if (result) {
-      await console.log(result);
-        
+    if (result) {      
         return result.email;
     } else {
-        console.log(`User does not exist `);
+        
         return null;            
     }
     
@@ -140,15 +136,12 @@ mongoClient.close();
 
 async function getPassword(email){
 
-
 try{
 	 mongoClient=await createClient()
 	
     const result = await collection.findOne({email:email});
 
-    if (result) {
-      await console.log(result);
-        
+    if (result) {      
         return result.password;
     } else {
         console.log(`Password  not found`);
